@@ -60,15 +60,15 @@ Each scene was re-rendered into 4 distinct viewpoints using a custom multi-view 
 
 ```
 Visual-Question-Answering-On-3D-Images/
-|── docs/
-|   |── VQA_Research_Paper.pdf        # Research Paper
+├── docs/
+│   └── VQA_Research_Paper.pdf        # Research Paper
 ├── clevr-dataset-gen-main/
 │   ├── assets/                       # Demo GIFs/images from the base CLEVR repo
 │   │
 │   ├── image_generation/             # Original single-view CLEVR image generation (Blender)
 │   │   ├── data/
 │   │   │   ├── materials/            # MyMetal.blend, Rubber.blend
-│   │   │   ├── shapes/                # SmoothCube_v2, SmoothCylinder, Sphere
+│   │   │   ├── shapes/              # SmoothCube_v2, SmoothCylinder, Sphere
 │   │   │   ├── base_scene.blend
 │   │   │   ├── CoGenT_A.json / CoGenT_B.json
 │   │   │   └── properties.json
