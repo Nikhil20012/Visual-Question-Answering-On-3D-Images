@@ -161,9 +161,44 @@ The gap between training and validation accuracy is largely a dataset size issue
 
 ## Future Work
 
-Multi-view 3D VQA is still a pretty underexplored area compared to standard 2D VQA, so there's a lot of room to keep building on this. Next steps would be improving accuracy with a larger generated dataset and trying out different multi-view fusion architectures, with the eventual goal of getting this to a point where it could actually be deployed in real HRI applications.
+This project was completed in 2022, before the wave of large vision-language models
+(GPT-4V, Claude, etc.) that have since transformed multimodal reasoning. The 3D VQA
+space has progressed considerably since then, with benchmarks like ScanQA and MV-ScanQA,
+and fusion approaches that bridge 2D and 3D representations using LLM backbones. If
+revisiting this project today, the natural next step would be replacing the
+DenseNet121 + co-attention pipeline with a VLM-based architecture, scaling up the
+dataset with more rendered scenes, and evaluating on established 3D VQA benchmarks
+rather than a custom CLEVR subset.
+
+Some production-oriented directions that could build on this work:
+
+- **Warehouse inventory audit**: mount 4 fixed cameras at each storage bay, run
+  multi-view VQA to answer queries like "is the top shelf fully stocked?" or "are
+  any items misplaced?" without manual walkthroughs. Plug into an existing WMS
+  (warehouse management system) via a FastAPI endpoint that accepts a bay ID and a
+  natural language question, returns an answer plus the viewpoint that was most
+  informative.
+
+- **Retail shelf compliance**: similar multi-camera setup in store aisles. Brand
+  managers could ask "is Product X at eye level?" or "how many facings does Product Y
+  have?" through a simple dashboard. The multi-view approach directly solves the
+  occlusion problem that single-camera planogram systems struggle with.
+
+- **Industrial quality inspection**: position cameras around an assembly line station
+  to catch defects that are only visible from certain angles. A technician could ask
+  "is the weld on the left joint complete?" and get an answer grounded in whichever
+  viewpoint best shows that joint, along with a confidence score.
+
+- **Assistive robotics for accessibility**: a mobile robot with multiple cameras could
+  help visually impaired users navigate indoor spaces by answering spatial questions
+  like "is there a chair blocking the hallway?" or "which door is the elevator?"
+  using real-time multi-view fusion.
+
+Each of these could be prototyped today using a VLM API (Claude or GPT-4V) for the
+reasoning layer, with the multi-view rendering and aggregation pipeline from this
+project adapted to handle real camera feeds instead of Blender-generated scenes.
 
 ---
 
-**Authors:** Y Nikhil Bharadwaj, Shubham M Mahale, Altaf Abdul Razak Kandagal, Yamajala Siddhardha
+**Authors:** Y Nikhil Bharadwaj, Shubham M Mahale, Altaf Abdul Razak Kandagal, Yamajala Siddhardha  
 **Guidance:** Dr. Surabhi Narayan, PES University
