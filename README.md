@@ -136,8 +136,8 @@ The gap between training and validation accuracy is mostly a dataset size issue.
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Nikhil20012/Visual-Question-Answering-On-3D-Images.git
-   cd Visual-Question-Answering-On-3D-Images
+   git clone https://github.com/Nikhil20012/Visual-Question-Answering-On-3D-Scenes.git
+   cd Visual-Question-Answering-On-3D-Scenes
    ```
 2. **Install dependencies**: Blender for scene rendering, plus TensorFlow/Keras, NumPy, and the other packages referenced in `VQA_3_Model_Final.ipynb`.
 3. **Generate the multi-view 3D dataset**
