@@ -1,4 +1,4 @@
-# Visual Question Answering on 3D Images
+# Visual Question Answering on 3D Scenes
 
 A capstone project that extends traditional Visual Question Answering (VQA) from single 2D RGB images to multi-view 3D scenes, aimed at improving perception accuracy for Human-Robot Interaction (HRI) applications.
 
