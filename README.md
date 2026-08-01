@@ -41,7 +41,7 @@ In standard VQA systems, a single fixed 2D image limits how much a model can act
 
 1. **Dataset generation**: Extended the original CLEVR dataset generation pipeline (Blender) with a custom `static_scene_generator` module that renders 4 camera viewpoints per scene, spaced 90 degrees apart at 45 degrees elevation, instead of the original single view. Object attribute generation (color, size, material, shape) was also customized through `properties_customised.json`.
 2. **Question generation**: Used the standard CLEVR `question_generation` pipeline, instantiating question templates (`CLEVR_1.0_templates`) against the generated scenes to produce question-answer pairs automatically.
-3. **Image feature extraction**: Used a pretrained DenseNet121 CNN to extract features from each viewpoint image.
+3. **Image feature extraction**: Used a pretrained DenseNet121 CNN to extract (49, 1024)-dimensional feature maps from each viewpoint image. The 49 comes from the 7x7 spatial grid of DenseNet121's final conv layer, and 1024 is the channel depth.
 4. **Question processing**: Tokenized and lemmatized questions, then built hierarchical word, phrase, and sentence-level representations (embeddings plus a custom phrase-level module plus an LSTM for sentence-level).
 5. **Joint feature representation**: Custom attention layers (`AttentionMaps`, `ContextVector`) fuse image and question features at each linguistic level, feeding forward hierarchically before a final dense classifier.
 6. **Multi-view aggregation**: Each viewpoint is scored independently, and the 4 prediction vectors are stacked and combined with argmax to get the final answer.
@@ -50,9 +50,10 @@ In standard VQA systems, a single fixed 2D image limits how much a model can act
 
 The dataset used is CLEVR (Compositional Language and Elementary Visual Reasoning), a synthetic VQA benchmark of 3D-rendered scenes with ground-truth object attributes, relationships, and generated Q&A pairs.
 
-- **Training set**: ~2,000 images, ~5,000 questions
-- **Validation set**: ~400 images, ~4,000 questions
-- **Test set**: ~400 images, ~4,000 questions
+- **Total**: ~2,000 images, ~5,000 questions (21 distinct answer types)
+- **Train/Validation split**: 99/1 stratified split (4,950 train, 50 validation samples)
+
+The split is small because the dataset itself is small. Standard VQA benchmarks have orders of magnitude more data; we were constrained by hardware and Blender rendering time.
 
 Each scene was re-rendered into 4 distinct viewpoints using a custom multi-view extension (`static_scene_generator/render_images_mv.py`) built on top of the original CLEVR dataset generator.
 
@@ -124,13 +125,13 @@ Visual-Question-Answering-On-3D-Scenes/
 
 ## Results
 
-The model was evaluated using F1 score and categorical cross-entropy loss.
+During training, the model is monitored using F1 score (micro-averaged) and categorical cross-entropy loss. Final accuracy is measured using a custom VQA accuracy function based on the standard VQA evaluation protocol: `min(count of matching human answers / 3, 1)` per question, averaged across the dataset.
 
-| Metric   | Training | Validation |
-|----------|----------|------------|
-| Accuracy | ~56%     | ~38%       |
+| Metric       | Training | Validation |
+|--------------|----------|------------|
+| VQA Accuracy | ~56.2%   | ~46.7%     |
 
-The gap between training and validation accuracy is mostly a dataset size issue. Standard VQA benchmarks usually have far more images and questions than we could generate given hardware and time constraints.
+The gap between training and validation accuracy is largely a dataset size issue. The validation set contains only 50 samples (due to the 99/1 split), making it a noisy estimate. Standard VQA benchmarks have far more images and questions than we could generate given hardware and rendering time constraints.
 
 ## Getting Started
 
@@ -154,7 +155,7 @@ The gap between training and validation accuracy is mostly a dataset size issue.
 
 ## Technologies Used
 
-- **Machine Learning**: TensorFlow / Keras, CNN (DenseNet121), LSTM/GRU, custom attention mechanisms
+- **Machine Learning**: TensorFlow / Keras, CNN (DenseNet121), LSTM, custom attention mechanisms (co-attention)
 - **NLP**: Tokenization, lemmatization, hierarchical word/phrase/sentence embeddings
 - **3D Image Processing / Rendering**: Blender, custom multi-view CLEVR dataset generation pipeline
 
