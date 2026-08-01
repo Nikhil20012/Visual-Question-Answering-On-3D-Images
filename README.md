@@ -60,6 +60,8 @@ Each scene was re-rendered into 4 distinct viewpoints using a custom multi-view 
 
 ```
 Visual-Question-Answering-On-3D-Images/
+|── docs/
+|   |── VQA_Research_Paper.pdf        # Research Paper
 ├── clevr-dataset-gen-main/
 │   ├── assets/                       # Demo GIFs/images from the base CLEVR repo
 │   │
