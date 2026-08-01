@@ -59,7 +59,7 @@ Each scene was re-rendered into 4 distinct viewpoints using a custom multi-view 
 ## Repository Structure
 
 ```
-Visual-Question-Answering-On-3D-Images/
+Visual-Question-Answering-On-3D-Scenes/
 ├── docs/
 │   └── VQA_Research_Paper.pdf        # Research Paper
 ├── clevr-dataset-gen-main/
